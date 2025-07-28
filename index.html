@@ -17,10 +17,11 @@ body {
   width:100%;
   max-width:1000px;
   margin:auto;
-  aspect-ratio:2/1;
+  aspect-ratio:2/1; /* always double page */
 }
 #magazine .page {
   width:50%;
+  height:auto;
   background-size:200% 100%;
   background-repeat:no-repeat;
 }
@@ -34,62 +35,78 @@ body {
 </head>
 <body>
 
-<div id="magazine">
-  <div class="cover" style="background-image:url(images/AA.jpg)"></div>
-  <div class="cover" style="background-image:url(images/BB.jpg)"></div>
-  <div class="back-cover" style="background-image:url(images/CC.jpg)"></div>
-  <div class="back-cover" style="background-image:url(images/ZZ.jpg)"></div>
-</div>
+<div id="magazine"></div>
 
 <script>
 $(function(){
-  var totalPhotos = 49; // 00.jpg to 48.jpg
-  var totalPages = totalPhotos*2 + 4; // covers + photos + back covers
+  var totalPhotos = 49; // photos named 00.jpg, 01.jpg, ..., 48.jpg
+  var totalPages = totalPhotos*2 + 4; // 4 extra: AA.jpg, BB.jpg, CC.jpg, ZZ.jpg
 
   $('#magazine').turn({
     width: $('#magazine').width(),
     height: $('#magazine').width()/2,
     display:'double',
     autoCenter:true,
-    pages: totalPages,
-    duration:1500,
-    elevation:50,
+    acceleration:true,
     gradients:true,
+    elevation:50,
+    duration:1500,
+    pages: totalPages,
     when:{
       missing: function(event, pages){
         for(var i=0;i<pages.length;i++){
           var page = pages[i];
           var pageDiv;
-
-          if(page>2 && page<=totalPages-2){
-            // these are the photo pages
-            var photoIndex = Math.floor((page-3)/2); 
-            var side = (page%2==1)?'left':'right';
+          
+          if(page==1){
+            // first cover page
+            pageDiv = $('<div />',{
+              'class':'cover',
+              css:{'background-image':'url(images/AA.jpg)'}
+            });
+          } else if(page==2){
+            pageDiv = $('<div />',{
+              'class':'cover',
+              css:{'background-image':'url(images/BB.jpg)'}
+            });
+          } else if(page==totalPages-1){
+            pageDiv = $('<div />',{
+              'class':'back-cover',
+              css:{'background-image':'url(images/CC.jpg)'}
+            });
+          } else if(page==totalPages){
+            pageDiv = $('<div />',{
+              'class':'back-cover',
+              css:{'background-image':'url(images/ZZ.jpg)'}
+            });
+          } else {
+            // normal photo pages
+            var photoIndex = Math.floor((page-3)/2); // adjust offset
             var photoFile = photoIndex.toString().padStart(2,'0')+'.jpg';
+            var side = (page%2==1)?'left':'right';
             pageDiv = $('<div />',{
               'class':'page '+side,
               css:{'background-image':'url(images/'+photoFile+')'}
             });
-            $('#magazine').turn('addPage', pageDiv, page);
           }
-          // first two and last two pages are already in HTML
+          $('#magazine').turn('addPage', pageDiv, page);
         }
       }
     }
   });
 
-  // Resize
+  // Resize on window change
   $(window).on('resize',function(){
     $('#magazine').turn('size', $('#magazine').width(), $('#magazine').width()/2);
   });
 
-  // Keyboard nav
+  // Keyboard navigation
   $(window).bind('keydown', function(e){
     if(e.keyCode==37) $('#magazine').turn('previous');
     else if(e.keyCode==39) $('#magazine').turn('next');
   });
 
-  // Click/touch (prevent double)
+  // Click/touch to turn pages (avoid double flip)
   $('#magazine').on('click touchstart', function(e){
     e.preventDefault();
     var offset=$(this).offset();
