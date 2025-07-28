@@ -221,6 +221,20 @@ body{
 			
 	});
 
+$('#magazine').on('click touchstart', function(e) {
+		var offset = $(this).offset();
+		var width = $(this).width();
+		var x = e.pageX || (e.originalEvent.touches ? e.originalEvent.touches[0].pageX : 0);
+
+		if (x - offset.left < width/2) {
+			// Left half clicked: go to previous page
+			$(this).turn('previous');
+		} else {
+			// Right half clicked: go to next page
+			$(this).turn('next');
+		}
+	});
+	
 </script>
 
 </body>
