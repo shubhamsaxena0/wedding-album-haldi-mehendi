@@ -1,123 +1,239 @@
 <!doctype html>
 <html>
 <head>
-<meta charset="utf-8">
-<title>Wedding Album</title>
-<script src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.7.1.min.js"></script>
+<script type="text/javascript" src="turn.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/turn.js/3/turn.min.js"></script>
-<style>
-body {
-  background:#ccc;
-  margin:0;
-  padding:0;
-  display:flex;
-  justify-content:center;
+
+<style type="text/css">
+body{
+	background:#ccc;
 }
-#magazine {
-  width:100%;
-  max-width:1000px;
-  margin:auto;
-  aspect-ratio:2/1; /* always double page */
+#magazine{
+  width: 100%;
+  margin: auto;
+  aspect-ratio: 3 / 1;
+}
+#magazine .turn-page{
+	background-color:#ccc;
+	background-size:100% 100%;
 }
 #magazine .page {
-  width:50%;
-  height:auto;
-  background-size:200% 100%;
-  background-repeat:no-repeat;
+  width: 50%;          /* half of #magazine */
+  height: auto;
+  background-size: 200% 100%;  /* because full image spans both pages */
+  background-repeat: no-repeat;
 }
-#magazine .left  { background-position:left center; }
-#magazine .right { background-position:right center; }
-#magazine .cover, #magazine .back-cover {
-  background-size:cover;
-  background-repeat:no-repeat;
+#magazine .left {
+	background-position: left center;
+}
+
+#magazine .right {
+	background-position: right center;
 }
 </style>
 </head>
 <body>
 
-<div id="magazine"></div>
+<div id="magazine">
 
-<script>
-$(function(){
-  var totalPhotos = 49; // photos named 00.jpg, 01.jpg, ..., 48.jpg
-  var totalPages = totalPhotos*2 + 4; // 4 extra: AA.jpg, BB.jpg, CC.jpg, ZZ.jpg
+    <div style="background-image:url(images/AA.jpg);"></div>
+    <div style="background-image:url(images/BB.jpg);"></div>
+    <div style="background-image:url(images/CC.jpg);"></div>
 
-  $('#magazine').turn({
-    width: $('#magazine').width(),
-    height: $('#magazine').width()/2,
-    display:'double',
-    autoCenter:true,
-    acceleration:true,
-    gradients:true,
-    elevation:50,
-    duration:1500,
-    pages: totalPages,
-    when:{
-      missing: function(event, pages){
-        for(var i=0;i<pages.length;i++){
-          var page = pages[i];
-          var pageDiv;
-          
-          if(page==1){
-            // first cover page
-            pageDiv = $('<div />',{
-              'class':'cover',
-              css:{'background-image':'url(images/AA.jpg)'}
-            });
-          } else if(page==2){
-            pageDiv = $('<div />',{
-              'class':'cover',
-              css:{'background-image':'url(images/BB.jpg)'}
-            });
-          } else if(page==totalPages-1){
-            pageDiv = $('<div />',{
-              'class':'back-cover',
-              css:{'background-image':'url(images/CC.jpg)'}
-            });
-          } else if(page==totalPages){
-            pageDiv = $('<div />',{
-              'class':'back-cover',
-              css:{'background-image':'url(images/ZZ.jpg)'}
-            });
-          } else {
-            // normal photo pages
-            var photoIndex = Math.floor((page-3)/2); // adjust offset
-            var photoFile = photoIndex.toString().padStart(2,'0')+'.jpg';
-            var side = (page%2==1)?'left':'right';
-            pageDiv = $('<div />',{
-              'class':'page '+side,
-              css:{'background-image':'url(images/'+photoFile+')'}
-            });
-          }
-          $('#magazine').turn('addPage', pageDiv, page);
-        }
-      }
-    }
-  });
+    <div class="page left"  style="background-image:url(images/00.jpg);"></div>
+    <div class="page right" style="background-image:url(images/00.jpg);"></div>
 
-  // Resize on window change
-  $(window).on('resize',function(){
-    $('#magazine').turn('size', $('#magazine').width(), $('#magazine').width()/2);
-  });
+    <div class="page left"  style="background-image:url(images/01.jpg);"></div>
+    <div class="page right" style="background-image:url(images/01.jpg);"></div>
 
-  // Keyboard navigation
-  $(window).bind('keydown', function(e){
-    if(e.keyCode==37) $('#magazine').turn('previous');
-    else if(e.keyCode==39) $('#magazine').turn('next');
-  });
+    <div class="page left"  style="background-image:url(images/02.jpg);"></div>
+    <div class="page right" style="background-image:url(images/02.jpg);"></div>
 
-  // Click/touch to turn pages (avoid double flip)
-  $('#magazine').on('click touchstart', function(e){
-    e.preventDefault();
-    var offset=$(this).offset();
-    var width=$(this).width();
-    var x=e.pageX||(e.originalEvent.touches?e.originalEvent.touches[0].pageX:0);
-    if(x - offset.left < width/2)
-      $(this).turn('previous');
-    else
-      $(this).turn('next');
-  });
-});
+    <div class="page left"  style="background-image:url(images/03.jpg);"></div>
+    <div class="page right" style="background-image:url(images/03.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/04.jpg);"></div>
+    <div class="page right" style="background-image:url(images/04.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/05.jpg);"></div>
+    <div class="page right" style="background-image:url(images/05.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/06.jpg);"></div>
+    <div class="page right" style="background-image:url(images/06.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/07.jpg);"></div>
+    <div class="page right" style="background-image:url(images/07.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/08.jpg);"></div>
+    <div class="page right" style="background-image:url(images/08.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/09.jpg);"></div>
+    <div class="page right" style="background-image:url(images/09.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/10.jpg);"></div>
+    <div class="page right" style="background-image:url(images/10.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/11.jpg);"></div>
+    <div class="page right" style="background-image:url(images/11.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/12.jpg);"></div>
+    <div class="page right" style="background-image:url(images/12.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/13.jpg);"></div>
+    <div class="page right" style="background-image:url(images/13.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/14.jpg);"></div>
+    <div class="page right" style="background-image:url(images/14.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/15.jpg);"></div>
+    <div class="page right" style="background-image:url(images/15.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/16.jpg);"></div>
+    <div class="page right" style="background-image:url(images/16.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/17.jpg);"></div>
+    <div class="page right" style="background-image:url(images/17.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/18.jpg);"></div>
+    <div class="page right" style="background-image:url(images/18.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/19.jpg);"></div>
+    <div class="page right" style="background-image:url(images/19.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/20.jpg);"></div>
+    <div class="page right" style="background-image:url(images/20.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/21.jpg);"></div>
+    <div class="page right" style="background-image:url(images/21.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/22.jpg);"></div>
+    <div class="page right" style="background-image:url(images/22.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/23.jpg);"></div>
+    <div class="page right" style="background-image:url(images/23.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/24.jpg);"></div>
+    <div class="page right" style="background-image:url(images/24.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/25.jpg);"></div>
+    <div class="page right" style="background-image:url(images/25.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/26.jpg);"></div>
+    <div class="page right" style="background-image:url(images/26.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/27.jpg);"></div>
+    <div class="page right" style="background-image:url(images/27.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/28.jpg);"></div>
+    <div class="page right" style="background-image:url(images/28.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/29.jpg);"></div>
+    <div class="page right" style="background-image:url(images/29.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/30.jpg);"></div>
+    <div class="page right" style="background-image:url(images/30.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/31.jpg);"></div>
+    <div class="page right" style="background-image:url(images/31.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/32.jpg);"></div>
+    <div class="page right" style="background-image:url(images/32.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/33.jpg);"></div>
+    <div class="page right" style="background-image:url(images/33.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/34.jpg);"></div>
+    <div class="page right" style="background-image:url(images/34.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/35.jpg);"></div>
+    <div class="page right" style="background-image:url(images/35.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/36.jpg);"></div>
+    <div class="page right" style="background-image:url(images/36.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/37.jpg);"></div>
+    <div class="page right" style="background-image:url(images/37.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/38.jpg);"></div>
+    <div class="page right" style="background-image:url(images/38.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/39.jpg);"></div>
+    <div class="page right" style="background-image:url(images/39.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/40.jpg);"></div>
+    <div class="page right" style="background-image:url(images/40.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/41.jpg);"></div>
+    <div class="page right" style="background-image:url(images/41.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/42.jpg);"></div>
+    <div class="page right" style="background-image:url(images/42.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/43.jpg);"></div>
+    <div class="page right" style="background-image:url(images/43.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/44.jpg);"></div>
+    <div class="page right" style="background-image:url(images/44.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/45.jpg);"></div>
+    <div class="page right" style="background-image:url(images/45.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/46.jpg);"></div>
+    <div class="page right" style="background-image:url(images/46.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/47.jpg);"></div>
+    <div class="page right" style="background-image:url(images/47.jpg);"></div>
+
+    <div class="page left"  style="background-image:url(images/48.jpg);"></div>
+    <div class="page right" style="background-image:url(images/48.jpg);"></div>
+
+
+    <div style="background-image:url(images/ZZ.jpg);"></div>
+
+
+</div>
+
+
+<script type="text/javascript">
+	$(window).ready(function() {
+		$('#magazine').turn({
+			display: 'double',
+			acceleration: true,
+			gradients: !$.isTouch,
+			elevation:50,
+			duration: 1500,
+			when: {
+				turned: function(e, page) {
+					/*console.log('Current view: ', $(this).turn('view'));*/
+				}
+			}
+		});
+	});
+	
+	
+	$(window).bind('keydown', function(e){
+		if (e.keyCode==37)
+			$('#magazine').turn('previous');
+		else if (e.keyCode==39)
+			$('#magazine').turn('next');		
+	});
+	
+	$('#magazine').on('click touchstart', function(e) {
+		e.preventDefault(); // 🛡 prevent second event
+		var offset = $(this).offset();
+		var width = $(this).width();
+		var x = e.pageX || (e.originalEvent.touches ? e.originalEvent.touches[0].pageX : 0);
+
+		if (x - offset.left < width/2) {
+			// Left half clicked: go to previous page
+			$(this).turn('previous');
+		} else {
+			// Right half clicked: go to next page
+			$(this).turn('next');
+		}
+	});
+	
 </script>
 
 </body>
