@@ -10,18 +10,19 @@ body{
 	background:#ccc;
 }
 #magazine{
-	width:1000px;
-	height:350px;
+  width: 100%;
+  margin: auto;
+  aspect-ratio: 3 / 1;
 }
 #magazine .turn-page{
 	background-color:#ccc;
 	background-size:100% 100%;
 }
 #magazine .page {
-	width: 500px;
-	height: 350px;
-	background-size: 1000px 350px; /* full image width */
-	background-repeat: no-repeat;
+  width: 50%;          /* half of #magazine */
+  height: auto;
+  background-size: 200% 100%;  /* because full image spans both pages */
+  background-repeat: no-repeat;
 }
 #magazine .left {
 	background-position: left center;
